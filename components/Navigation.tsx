@@ -1,49 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ShoppingBag, User } from 'lucide-react';
+import { Menu, X, ShoppingBag, User, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { LanguageSelector } from './LanguageSelector';
 import { useAuth } from '../context/AuthContext';
 import { useLoyalty } from '../context/LoyaltyContext';
 
 export const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [headerOpacity, setHeaderOpacity] = useState(0);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, logout } = useAuth();
   const { cart } = useLoyalty();
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const threshold = window.innerHeight - 100;
-      setIsScrolled(scrollY > threshold);
-
-      // Calculate opacity: 0 at top, 0.95 at threshold
-      const newOpacity = Math.min(scrollY / threshold, 0.95);
-      setHeaderOpacity(newOpacity);
+      setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
-    // Initial check
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { name: t('nav.about'), href: '/#about' },
-    { name: t('nav.products'), href: '/#products' },
+    { name: 'Over Ons', href: '/#about' },
+    { name: 'Producten', href: '/#products' },
     { name: 'Rewards', href: '/rewards' },
-    { name: 'Redeem', href: '/redeem' },
-    { name: t('nav.vote'), href: '/vote' },
+    { name: 'Stem', href: '/vote' },
   ];
 
   const handleLogout = () => {
@@ -51,85 +34,105 @@ export const Navigation: React.FC = () => {
     navigate('/');
   };
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'nl' ? 'en' : 'nl';
+    i18n.changeLanguage(newLang);
+  };
+
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        style={{ backgroundColor: `rgba(255, 255, 255, ${headerOpacity})` }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? 'backdrop-blur-md shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] border-b-2 border-black py-2'
-          : 'py-6'
-          }`}
-      >
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-6`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
+
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className={`w-12 h-12 bg-chocolate rounded-xl border-2 border-black flex items-center justify-center text-white font-bold font-playful text-2xl group-hover:rotate-12 transition-transform ${isScrolled ? 'shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]' : 'shadow-none'}`}>
-              P
+          <Link to="/" className="flex items-center gap-2 group relative z-50">
+            <div className="flex flex-col leading-none">
+              <span className="font-playful font-bold text-white text-3xl drop-shadow-md">Duo</span>
+              <span className="font-playful font-bold text-white text-3xl drop-shadow-md -mt-2">Penotti</span>
+              <div className="absolute -top-2 -right-4 text-brandYellow text-2xl animate-spin-slow">★</div>
             </div>
-            <span className={`font-playful text-3xl font-bold ${isScrolled ? 'text-chocolate' : 'text-white'} drop-shadow-sm transition-colors`}>
-              Duo Penotti
-            </span>
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-4 lg:gap-8">
+          {/* Center Pill - Desktop */}
+          <div className="hidden md:flex items-center bg-white rounded-full px-2 py-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="font-playful font-bold text-lg text-chocolate hover:text-brandRed transition-colors hover:-rotate-2 transform inline-block whitespace-nowrap"
+                className="font-body font-bold text-chocolate px-5 py-2 hover:bg-gray-100 rounded-full transition-colors"
               >
                 {link.name}
               </a>
             ))}
-            <LanguageSelector />
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-1 font-bold text-chocolate px-4 py-2 ml-2 border-l-2 border-gray-200 hover:text-brandRed"
+            >
+              <img
+                src={i18n.language === 'nl'
+                  ? "https://flagcdn.com/w40/nl.png"
+                  : "https://flagcdn.com/w40/gb.png"}
+                alt="Language"
+                className="w-6 h-4 object-cover rounded-sm shadow-sm"
+              />
+              {i18n.language.toUpperCase()}
+            </button>
+          </div>
 
-            <Link to="/cart" className="relative text-chocolate hover:text-brandRed transform hover:scale-110 transition-transform">
-              <ShoppingBag size={28} strokeWidth={2.5} />
+          {/* Right Side - Cart & User */}
+          <div className="hidden md:flex items-center gap-4">
+
+            {/* Cart */}
+            <Link
+              to="/cart"
+              className="bg-white w-12 h-12 rounded-full border-2 border-black flex items-center justify-center text-chocolate hover:scale-110 transition-transform shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] relative"
+            >
+              <ShoppingBag size={20} strokeWidth={2.5} />
               {cart.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brandPink text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-bounce">
+                <span className="absolute -top-1 -right-1 bg-brandRed text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border border-black">
                   {cart.reduce((acc, item) => acc + item.quantity, 0)}
                 </span>
               )}
             </Link>
 
+            {/* User Pill */}
             {user ? (
-              <div className="flex items-center gap-2 lg:gap-4">
-                <Link to={user.role === 'admin' ? '/admin' : '/rewards'} className="flex items-center gap-2 font-bold text-chocolate bg-brandYellow/20 px-3 py-2 lg:px-4 lg:py-2 rounded-full border-2 border-transparent hover:border-brandYellow transition-all whitespace-nowrap">
-                  <User size={20} />
-                  <span className="font-naughty hidden lg:inline">{user.points} pts</span>
-                  <span className="font-naughty lg:hidden">{user.points}</span>
-                </Link>
-                <button onClick={handleLogout} className="text-sm font-bold text-chocolate/60 hover:text-brandRed hover:underline decoration-wavy whitespace-nowrap">Logout</button>
+              <div className="flex items-center bg-white rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] pl-1 pr-4 py-1 gap-3">
+                <div className="w-8 h-8 bg-chocolate rounded-full flex items-center justify-center text-brandYellow">
+                  <User size={16} />
+                </div>
+                <div className="flex flex-col leading-none">
+                  <span className="font-bold text-xs text-chocolate">{user.points} PTS</span>
+                  <button onClick={handleLogout} className="text-[10px] font-bold text-gray-500 hover:text-brandRed text-left">Logout</button>
+                </div>
               </div>
             ) : (
-              <Link to="/login" className="bg-brandTeal text-chocolate px-6 py-2 rounded-full font-playful font-bold text-lg border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all whitespace-nowrap">
+              <Link to="/login" className="bg-brandYellow text-chocolate px-6 py-2 rounded-full font-bold border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all">
                 Login
               </Link>
             )}
+
           </div>
 
           {/* Mobile Toggle */}
-          <div className="md:hidden flex items-center gap-4">
-            <Link to="/cart" className="relative text-chocolate">
+          <div className="md:hidden flex items-center gap-4 z-50">
+            <Link to="/cart" className="relative text-white drop-shadow-md">
               <ShoppingBag size={24} />
               {cart.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brandPink text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border border-white">
+                <span className="absolute -top-2 -right-2 bg-brandRed text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border border-white">
                   {cart.length}
                 </span>
               )}
             </Link>
             <button
-              className="text-chocolate bg-white p-2 rounded-lg border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all"
+              className="text-chocolate bg-white p-2 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               onClick={() => setIsMobileOpen(!isMobileOpen)}
             >
               {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
@@ -145,13 +148,26 @@ export const Navigation: React.FC = () => {
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileOpen(false)}
-                className="font-playful text-4xl text-vanilla font-bold hover:text-brandYellow transition-colors transform hover:rotate-2"
+                className="font-playful text-4xl text-vanilla font-bold hover:text-brandYellow transition-colors"
               >
                 {link.name}
               </a>
             ))}
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 font-bold text-vanilla text-2xl border-2 border-vanilla px-6 py-2 rounded-full"
+            >
+              <img
+                src={i18n.language === 'nl'
+                  ? "https://flagcdn.com/w40/nl.png"
+                  : "https://flagcdn.com/w40/gb.png"}
+                alt="Language"
+                className="w-8 h-6 object-cover rounded-sm"
+              />
+              {i18n.language.toUpperCase()}
+            </button>
             {user ? (
-              <button onClick={handleLogout} className="font-naughty text-3xl text-brandPink font-bold transform -rotate-2">Logout</button>
+              <button onClick={handleLogout} className="font-naughty text-3xl text-brandPink font-bold">Logout</button>
             ) : (
               <Link to="/login" onClick={() => setIsMobileOpen(false)} className="bg-brandTeal text-chocolate px-8 py-3 rounded-full font-playful font-bold text-xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
                 Login

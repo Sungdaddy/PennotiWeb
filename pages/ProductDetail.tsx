@@ -1,6 +1,6 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Leaf, Info, Utensils } from 'lucide-react';
 import { JarVisual } from '../components/JarVisual';
 import { Product } from '../types';
@@ -11,13 +11,17 @@ export const ProductDetail: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
+
+    const [activeTab, setActiveTab] = useState<'info' | 'nutrition'>('info');
+    const [imageError, setImageError] = useState(false);
+
     // Scroll to top when component mounts or product changes
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [id]);
 
     // Build products object using translations
-    const product = useMemo((): Product | null => {
+    const product = useMemo(() => {
         if (!id) return null;
 
         const productData: Record<string, {
@@ -26,169 +30,62 @@ export const ProductDetail: React.FC = () => {
             image: string;
             ingredients: string;
             nutrition: { energy: string; fat: string; carbs: string; protein: string; salt: string };
-            recipes: Array<{ id: string; title: string; image: string; prepTime: string }>;
+            price: string;
+            weight: string;
         }> = {
             'duo-hazelnut-vanilla': {
                 key: 'duoHazelnutVanilla',
                 colors: ['#3E2723', '#FFF8E1'],
                 image: '/products/duo-vanilla.png',
                 ingredients: 'Sugar, vegetable oils (rapeseed, palm), hazelnuts (7%), low fat cocoa powder (4%), whole milk powder (2%), skimmed milk powder, calcium carbonate, emulsifier (lecithins), natural vanilla flavor.',
-                nutrition: {
-                    energy: '2350 kJ / 563 kcal',
-                    fat: '35g',
-                    carbs: '59g',
-                    protein: '2.4g',
-                    salt: '0.11g'
-                },
-                recipes: [
-                    {
-                        id: 'r_duo_1',
-                        title: 'Duo Swirl Brownies',
-                        image: 'https://picsum.photos/600/400?random=20',
-                        prepTime: '40'
-                    },
-                    {
-                        id: 'r_duo_2',
-                        title: 'Hazelnut Vanilla Crepes',
-                        image: 'https://picsum.photos/600/400?random=21',
-                        prepTime: '20'
-                    }
-                ]
+                nutrition: { energy: '2350 kJ / 563 kcal', fat: '35g', carbs: '59g', protein: '2.4g', salt: '0.11g' },
+                price: '€3,49',
+                weight: '400g'
             },
             'duo-hazelnut-caramel': {
                 key: 'duoHazelnutCaramel',
                 colors: ['#5D4037', '#D84315'],
                 image: '/products/duo-caramel.png',
                 ingredients: 'Sugar, vegetable oils, hazelnuts (7%), caramel powder, cocoa powder, milk powder, emulsifier, flavorings.',
-                nutrition: {
-                    energy: '2360 kJ / 565 kcal',
-                    fat: '36g',
-                    carbs: '58g',
-                    protein: '2.5g',
-                    salt: '0.15g'
-                },
-                recipes: [
-                    {
-                        id: 'r_caramel_1',
-                        title: 'Caramel Hazelnut Tart',
-                        image: 'https://picsum.photos/600/400?random=22',
-                        prepTime: '55'
-                    },
-                    {
-                        id: 'r_caramel_2',
-                        title: 'Duo Caramel Popcorn',
-                        image: 'https://picsum.photos/600/400?random=23',
-                        prepTime: '10'
-                    }
-                ]
+                nutrition: { energy: '2360 kJ / 565 kcal', fat: '36g', carbs: '58g', protein: '2.5g', salt: '0.15g' },
+                price: '€3,49',
+                weight: '400g'
             },
             'uno-white': {
                 key: 'unoWhite',
                 colors: ['#FFF8E1', '#FFF8E1'],
                 image: '/products/uno-white.png',
                 ingredients: 'Sugar, vegetable oils (sunflower, rapeseed), skimmed milk powder, roasted almonds, cocoa butter, emulsifier.',
-                nutrition: {
-                    energy: '2400 kJ / 575 kcal',
-                    fat: '38g',
-                    carbs: '55g',
-                    protein: '4.0g',
-                    salt: '0.10g'
-                },
-                recipes: [
-                    {
-                        id: 'r_white_1',
-                        title: 'White Chocolate Raspberry Toast',
-                        image: 'https://picsum.photos/600/400?random=24',
-                        prepTime: '5'
-                    },
-                    {
-                        id: 'r_white_2',
-                        title: 'Almond White Blondies',
-                        image: 'https://picsum.photos/600/400?random=25',
-                        prepTime: '35'
-                    }
-                ]
+                nutrition: { energy: '2400 kJ / 575 kcal', fat: '38g', carbs: '55g', protein: '4.0g', salt: '0.10g' },
+                price: '€3,29',
+                weight: '350g'
             },
             'uno-praline': {
                 key: 'unoPraline',
                 colors: ['#8D6E63', '#8D6E63'],
                 image: '/products/uno-praline.png',
                 ingredients: 'Sugar, hazelnuts (15%), vegetable oils, cocoa powder, milk powder, emulsifier, flavorings.',
-                nutrition: {
-                    energy: '2380 kJ / 570 kcal',
-                    fat: '37g',
-                    carbs: '54g',
-                    protein: '5.0g',
-                    salt: '0.08g'
-                },
-                recipes: [
-                    {
-                        id: 'r_praline_1',
-                        title: 'Praline Stuffed Cookies',
-                        image: 'https://picsum.photos/600/400?random=26',
-                        prepTime: '25'
-                    },
-                    {
-                        id: 'r_praline_2',
-                        title: 'Hazelnut Praline Latte',
-                        image: 'https://picsum.photos/600/400?random=27',
-                        prepTime: '5'
-                    }
-                ]
+                nutrition: { energy: '2380 kJ / 570 kcal', fat: '37g', carbs: '54g', protein: '5.0g', salt: '0.08g' },
+                price: '€3,69',
+                weight: '350g'
             },
             'cookie-crunchy': {
                 key: 'cookieCrunchy',
                 colors: ['#D84315', '#D84315'],
                 image: '/products/cookie-crunchy.png',
                 ingredients: 'Speculoos biscuits (57%), vegetable oils, sugar, emulsifier (soy lecithin), acid (citric acid).',
-                nutrition: {
-                    energy: '2340 kJ / 560 kcal',
-                    fat: '34g',
-                    carbs: '60g',
-                    protein: '3.0g',
-                    salt: '0.50g'
-                },
-                recipes: [
-                    {
-                        id: 'r_crunchy_1',
-                        title: 'Crunchy Speculoos Parfait',
-                        image: 'https://picsum.photos/600/400?random=28',
-                        prepTime: '15'
-                    },
-                    {
-                        id: 'r_crunchy_2',
-                        title: 'Speculoos Truffles',
-                        image: 'https://picsum.photos/600/400?random=29',
-                        prepTime: '30'
-                    }
-                ]
+                nutrition: { energy: '2340 kJ / 560 kcal', fat: '34g', carbs: '60g', protein: '3.0g', salt: '0.50g' },
+                price: '€3,99',
+                weight: '380g'
             },
             'cookie-original': {
                 key: 'cookieOriginal',
                 colors: ['#D84315', '#D84315'],
                 image: '/products/cookie-original.png',
                 ingredients: 'Speculoos biscuits (57%), vegetable oils, sugar, emulsifier (soy lecithin), acid (citric acid).',
-                nutrition: {
-                    energy: '2340 kJ / 560 kcal',
-                    fat: '34g',
-                    carbs: '60g',
-                    protein: '3.0g',
-                    salt: '0.50g'
-                },
-                recipes: [
-                    {
-                        id: 'r1',
-                        title: 'Speculoos Cheesecake',
-                        image: 'https://picsum.photos/600/400?random=10',
-                        prepTime: '45'
-                    },
-                    {
-                        id: 'r2',
-                        title: 'Cookie Penotti Milkshake',
-                        image: 'https://picsum.photos/600/400?random=11',
-                        prepTime: '5'
-                    }
-                ]
+                nutrition: { energy: '2340 kJ / 560 kcal', fat: '34g', carbs: '60g', protein: '3.0g', salt: '0.50g' },
+                price: '€3,99',
+                weight: '380g'
             }
         };
 
@@ -204,149 +101,176 @@ export const ProductDetail: React.FC = () => {
             tagline: t(`products.${data.key}.tagline`),
             ingredients: data.ingredients,
             nutrition: data.nutrition,
-            recipes: data.recipes
+            price: data.price,
+            weight: data.weight
         };
     }, [id, t]);
 
     if (!product) {
-        return (
-            <div className="min-h-screen bg-vanillaCream flex items-center justify-center">
-                <div className="text-center">
-                    <h2 className="text-4xl font-playful font-bold text-chocolate mb-4">{t('productDetail.notFound')}</h2>
-                    <div className="font-naughty text-2xl text-brandRed mb-6">{t('productDetail.notFoundMsg')}</div>
-                    <button
-                        onClick={() => navigate('/')}
-                        className="bg-brandTeal text-white px-6 py-3 rounded-xl font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all"
-                    >
-                        {t('productDetail.backToHome')}
-                    </button>
-                </div>
-            </div>
-        );
+        return <div>Product not found</div>;
     }
 
     return (
-        <div className="min-h-screen bg-vanillaCream text-chocolate selection:bg-brandPink selection:text-white overflow-x-hidden">
-            <div className="container mx-auto px-6 pt-24 pb-12">
+        <div className="min-h-screen bg-vanilla text-chocolate overflow-x-hidden relative">
+
+            {/* Backgrounds */}
+            <div className="fixed inset-0 flex z-0">
+                <div className="w-1/2 h-full bg-[#3E2723]"></div> {/* Dark Chocolate */}
+                <div className="w-1/2 h-full bg-[#FFF8E1]"></div> {/* Vanilla Cream */}
+            </div>
+
+            {/* Swirl Overlay */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <svg className="w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="none">
+                    <path
+                        d="M720 0 C 900 200, 500 400, 720 900 L 0 900 L 0 0 Z"
+                        fill="#3E2723"
+                    />
+                    <path
+                        d="M720 0 C 900 200, 500 400, 720 900 L 1440 900 L 1440 0 Z"
+                        fill="#FFF8E1"
+                    />
+                </svg>
+            </div>
+
+            <div className="container mx-auto px-6 pt-32 pb-12 relative z-10">
+
+                {/* Back Button */}
                 <motion.button
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     onClick={() => navigate('/')}
-                    className="flex items-center gap-2 text-chocolate font-bold hover:text-brandRed mb-8 group font-playful text-lg"
+                    className="flex items-center gap-2 text-white font-bold hover:text-brandYellow mb-8 group font-playful text-lg"
                 >
                     <ArrowLeft className="group-hover:-translate-x-1 transition-transform" />
-                    {t('productDetail.back')}
+                    Terug naar Home
                 </motion.button>
 
-                <div className="grid md:grid-cols-2 gap-12 items-start">
-                    {/* Product Image - Floating & Playful */}
-                    <motion.div
-                        initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
-                        animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                        transition={{ type: "spring", stiffness: 100 }}
-                        className="relative flex justify-center"
-                    >
-                        <div className="absolute inset-0 bg-white rounded-full blur-3xl opacity-50 scale-90" />
+                <div className="flex flex-col md:flex-row items-center gap-12">
 
-                        {/* Sticker Badge */}
+                    {/* Left Column - Image */}
+                    <div className="w-full md:w-1/2 flex justify-center relative">
                         <motion.div
-                            initial={{ scale: 0, rotate: 20 }}
-                            animate={{ scale: 1, rotate: 12 }}
-                            transition={{ delay: 0.5, type: "spring" }}
-                            className="absolute -top-4 right-10 bg-brandYellow text-chocolate px-6 py-3 rounded-full font-naughty text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20 border-2 border-black"
+                            initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
+                            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                            transition={{ type: "spring", stiffness: 100 }}
+                            className="relative"
                         >
-                            {product.tagline}
+                            {/* Glow/Splash behind jar */}
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-white/20 blur-3xl rounded-full"></div>
+
+                            {!imageError ? (
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className="w-full max-w-[400px] drop-shadow-2xl object-contain relative z-10"
+                                    onError={() => setImageError(true)}
+                                />
+                            ) : (
+                                <JarVisual colorLeft={product.colors[0]} colorRight={product.colors[1]} label={product.tagline} className="w-full max-w-md h-[500px]" />
+                            )}
                         </motion.div>
+                    </div>
 
-                        {product.image.startsWith('/') ? (
-                            <img
-                                src={product.image}
-                                alt={product.name}
-                                className="w-full max-w-md drop-shadow-2xl object-contain z-10 hover:scale-105 transition-transform duration-500"
-                            />
-                        ) : (
-                            <JarVisual colorLeft={product.colors[0]} colorRight={product.colors[1]} label={product.tagline} className="w-full max-w-md h-[500px]" />
-                        )}
-                    </motion.div>
+                    {/* Right Column - Info */}
+                    <div className="w-full md:w-1/2">
+                        <motion.div
+                            initial={{ x: 50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <h1 className="text-5xl md:text-6xl font-playful font-bold text-chocolate mb-2 leading-tight">
+                                {product.name}
+                            </h1>
+                            <h2 className="text-2xl font-playful font-bold text-brandPink mb-6">
+                                {product.id === 'cookie-crunchy' ? 'Dubbel Crunchy in één Potti!' : 'Dubbel Lekker in één Potti!'}
+                            </h2>
+                            <p className="text-lg font-body font-bold text-chocolateLight mb-8 leading-relaxed max-w-lg">
+                                {product.description}
+                            </p>
 
-                    {/* Product Info - Card Style */}
-                    <motion.div
-                        initial={{ x: 50, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="bg-white p-8 md:p-12 rounded-[3rem] border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] relative"
-                    >
-                        <h1 className="text-4xl md:text-5xl font-playful font-bold mb-4 text-chocolate leading-tight">
-                            {product.name}
-                        </h1>
-                        <p className="text-xl font-body font-bold text-chocolateLight mb-8 leading-relaxed">
-                            {product.description}
-                        </p>
-
-                        <div className="space-y-8">
-                            {/* Ingredients */}
-                            <div className="bg-vanillaCream p-6 rounded-2xl border-2 border-chocolate/10">
-                                <h3 className="flex items-center gap-2 text-2xl font-playful font-bold text-chocolate mb-3">
-                                    <Leaf size={24} className="text-brandTeal" /> {t('productDetail.ingredients')}
-                                </h3>
-                                <p className="text-chocolate/80 font-body leading-relaxed">
-                                    {product.ingredients}
-                                </p>
-                            </div>
-
-                            {/* Nutrition */}
-                            <div>
-                                <h3 className="flex items-center gap-2 text-2xl font-playful font-bold text-chocolate mb-4">
-                                    <Info size={24} className="text-brandRed" /> {t('productDetail.nutrition')} <span className="text-sm font-body opacity-60">{t('productDetail.per100g')}</span>
-                                </h3>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    {Object.entries(product.nutrition).map(([key, value], idx) => (
-                                        <motion.div
-                                            key={key}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.3 + (idx * 0.1) }}
-                                            className="bg-white border-2 border-black p-3 rounded-xl text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all"
-                                        >
-                                            <div className="text-xs text-chocolateLight uppercase font-bold mb-1 tracking-wider">
-                                                {key === 'energy' ? t('productDetail.energy') :
-                                                    key === 'fat' ? t('productDetail.fat') :
-                                                        key === 'carbs' ? t('productDetail.carbs') :
-                                                            key === 'protein' ? t('productDetail.protein') :
-                                                                key === 'salt' ? t('productDetail.salt') : key}
-                                            </div>
-                                            <div className="text-chocolate font-playful font-bold text-lg">{value}</div>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Recipes */}
-                            {product.recipes && (
-                                <div>
-                                    <h3 className="flex items-center gap-2 text-2xl font-playful font-bold text-chocolate mb-4">
-                                        <Utensils size={24} className="text-brandPink" /> {t('productDetail.recipes')}
-                                    </h3>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        {product.recipes.map((recipe) => (
-                                            <div key={recipe.id} className="group bg-white rounded-2xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all cursor-pointer">
-                                                <div className="h-40 overflow-hidden relative">
-                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors z-10" />
-                                                    <img src={recipe.image} alt={recipe.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
-                                                </div>
-                                                <div className="p-4">
-                                                    <h4 className="font-playful font-bold text-lg text-chocolate mb-1 group-hover:text-brandRed transition-colors">{recipe.title}</h4>
-                                                    <div className="text-xs font-bold text-chocolateLight flex items-center gap-1 bg-vanillaCream inline-block px-2 py-1 rounded-full">
-                                                        <Utensils size={12} /> {recipe.prepTime} {t('productDetail.prepTime')}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
+                            {/* Purchase Card */}
+                            <div className="bg-[#880E4F] text-white p-4 rounded-3xl shadow-lg border-2 border-black mb-8 flex flex-col md:flex-row items-center justify-between gap-4 max-w-xl">
+                                <div className="flex items-center gap-6 px-4 w-full justify-between md:justify-start">
+                                    <div className="flex flex-col">
+                                        <span className="text-xs font-bold opacity-80">Inhoud:</span>
+                                        <span className="text-xl font-playful font-bold">{product.weight}</span>
+                                    </div>
+                                    <div className="w-px h-10 bg-white/20"></div>
+                                    <div className="flex flex-col">
+                                        <span className="text-xs font-bold opacity-80">Prijs:</span>
+                                        <span className="text-2xl font-playful font-bold">{product.price}</span>
+                                    </div>
+                                    <div className="hidden md:block w-px h-10 bg-white/20 ml-auto"></div>
+                                    <div className="hidden md:block text-sm font-bold opacity-80 italic">
+                                        Verkrijgbaar in de supermarkt
                                     </div>
                                 </div>
-                            )}
-                        </div>
-                    </motion.div>
+                            </div>
+
+                            {/* Tabs Section */}
+                            <div className="max-w-xl">
+                                <div className="flex gap-2 mb-0">
+                                    <button
+                                        onClick={() => setActiveTab('info')}
+                                        className={`px-6 py-2 rounded-t-xl font-bold border-2 border-black border-b-0 transition-all ${activeTab === 'info' ? 'bg-white text-chocolate' : 'bg-brandYellow text-chocolate hover:bg-brandYellow/80'}`}
+                                    >
+                                        Productinformatie
+                                    </button>
+                                    <button
+                                        onClick={() => setActiveTab('nutrition')}
+                                        className={`px-6 py-2 rounded-t-xl font-bold border-2 border-black border-b-0 transition-all ${activeTab === 'nutrition' ? 'bg-white text-chocolate' : 'bg-brandYellow text-chocolate hover:bg-brandYellow/80'}`}
+                                    >
+                                        Voedingswaarden
+                                    </button>
+                                </div>
+
+                                <div className="bg-white border-2 border-black rounded-b-xl rounded-tr-xl p-6 shadow-lg min-h-[200px]">
+                                    <AnimatePresence mode="wait">
+                                        {activeTab === 'info' ? (
+                                            <motion.div
+                                                key="info"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                            >
+                                                <h4 className="font-bold text-lg mb-2">Ingrediënten</h4>
+                                                <p className="text-chocolateLight leading-relaxed">
+                                                    {product.ingredients}
+                                                </p>
+                                            </motion.div>
+                                        ) : (
+                                            <motion.div
+                                                key="nutrition"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                            >
+                                                <div className="grid grid-cols-2 gap-y-2">
+                                                    <div className="font-bold text-chocolate">Energie</div>
+                                                    <div className="text-right text-chocolateLight">{product.nutrition.energy}</div>
+
+                                                    <div className="font-bold text-chocolate">Vetten</div>
+                                                    <div className="text-right text-chocolateLight">{product.nutrition.fat}</div>
+
+                                                    <div className="font-bold text-chocolate">Koolhydraten</div>
+                                                    <div className="text-right text-chocolateLight">{product.nutrition.carbs}</div>
+
+                                                    <div className="font-bold text-chocolate">Eiwitten</div>
+                                                    <div className="text-right text-chocolateLight">{product.nutrition.protein}</div>
+
+                                                    <div className="font-bold text-chocolate">Zout</div>
+                                                    <div className="text-right text-chocolateLight">{product.nutrition.salt}</div>
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            </div>
+
+                        </motion.div>
+                    </div>
+
                 </div>
             </div>
         </div>
