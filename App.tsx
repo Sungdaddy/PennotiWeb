@@ -11,6 +11,7 @@ import { Rewards } from './pages/Rewards';
 import { Redeem } from './pages/Redeem';
 import { Cart } from './pages/Cart';
 import { AdminPanel } from './pages/AdminPanel';
+import { VoteFlavors } from './pages/VoteFlavors';
 import './i18n';
 
 const App: React.FC = () => {
@@ -28,6 +29,7 @@ const App: React.FC = () => {
               <Route path="/rewards" element={<Rewards />} />
               <Route path="/redeem" element={<Redeem />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/vote" element={<VoteFlavors />} />
               <Route path="/admin" element={<AdminPanel />} />
             </Routes>
 

@@ -43,6 +43,7 @@ export const Navigation: React.FC = () => {
     { name: t('nav.products'), href: '/#products' },
     { name: 'Rewards', href: '/rewards' },
     { name: 'Redeem', href: '/redeem' },
+    { name: t('nav.vote'), href: '/vote' },
   ];
 
   const handleLogout = () => {

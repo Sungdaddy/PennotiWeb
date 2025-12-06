@@ -11,6 +11,20 @@ const resources = {
                 history: 'History',
                 recipes: 'Recipes',
                 buyNow: 'Buy Now',
+                vote: 'Vote',
+            },
+            vote: {
+                title: 'Flavor of the Month',
+                subtitle: 'Help us decide the next Duo Penotti sensation. The winner gets produced!',
+                voteBtn: 'Vote',
+                leader: 'LEADER',
+                totalVotes: 'Total Votes',
+                flavors: {
+                    f1: { name: 'Salted Caramel Popcorn', desc: 'Crunchy popcorn with sweet & salty caramel swirl.' },
+                    f2: { name: 'White Choco Raspberry', desc: 'Creamy white chocolate with a tangy raspberry twist.' },
+                    f3: { name: 'Banana Toffee', desc: 'Sweet banana cream mixed with sticky toffee fudge.' },
+                    f4: { name: 'Double Dark Espresso', desc: 'Intense dark chocolate with a kick of espresso.' },
+                }
             },
             hero: {
                 title1: 'Double Fun.',
@@ -126,6 +140,20 @@ const resources = {
                 history: 'Geschiedenis',
                 recipes: 'Recepten',
                 buyNow: 'Koop Nu',
+                vote: 'Stem',
+            },
+            vote: {
+                title: 'Smaak van de Maand',
+                subtitle: 'Help ons de volgende Duo Penotti sensatie te kiezen. De winnaar wordt geproduceerd!',
+                voteBtn: 'Stem',
+                leader: 'KOPLOPER',
+                totalVotes: 'Totaal Aantal Stemmen',
+                flavors: {
+                    f1: { name: 'Gezouten Karamel Popcorn', desc: 'Knapperige popcorn met zoete & zoute karamel swirl.' },
+                    f2: { name: 'Witte Choco Framboos', desc: 'Romige witte chocolade met een frisse frambozen twist.' },
+                    f3: { name: 'Banaan Toffee', desc: 'Zoete bananencrème gemixt met kleverige toffee fudge.' },
+                    f4: { name: 'Dubbel Donker Espresso', desc: 'Intense pure chocolade met een kick van espresso.' },
+                }
             },
             productDetail: {
                 notFound: 'Product Niet Gevonden',
@@ -241,6 +269,20 @@ const resources = {
                 history: 'Histoire',
                 recipes: 'Recettes',
                 buyNow: 'Acheter',
+                vote: 'Voter',
+            },
+            vote: {
+                title: 'Saveur du Mois',
+                subtitle: 'Aidez-nous à choisir la prochaine sensation Duo Penotti. Le gagnant sera produit !',
+                voteBtn: 'Voter',
+                leader: 'EN TÊTE',
+                totalVotes: 'Votes Totaux',
+                flavors: {
+                    f1: { name: 'Popcorn Caramel Salé', desc: 'Popcorn croquant avec un tourbillon de caramel sucré-salé.' },
+                    f2: { name: 'Choco Blanc Framboise', desc: 'Chocolat blanc crémeux avec une touche acidulée de framboise.' },
+                    f3: { name: 'Banane Toffee', desc: 'Crème de banane douce mélangée à du fudge au caramel collant.' },
+                    f4: { name: 'Double Espresso Noir', desc: 'Chocolat noir intense avec une touche d\'espresso.' },
+                }
             },
             productDetail: {
                 notFound: 'Produit Non Trouvé',
@@ -356,6 +398,20 @@ const resources = {
                 history: 'Geschichte',
                 recipes: 'Rezepte',
                 buyNow: 'Jetzt Kaufen',
+                vote: 'Abstimmen',
+            },
+            vote: {
+                title: 'Geschmack des Monats',
+                subtitle: 'Helfen Sie uns, die nächste Duo Penotti Sensation zu wählen. Der Gewinner wird produziert!',
+                voteBtn: 'Abstimmen',
+                leader: 'FÜHREND',
+                totalVotes: 'Gesamtstimmen',
+                flavors: {
+                    f1: { name: 'Gesalzenes Karamell Popcorn', desc: 'Knuspriges Popcorn mit süß-salzigem Karamellstrudel.' },
+                    f2: { name: 'Weiße Schoko Himbeere', desc: 'Cremige weiße Schokolade mit einem spritzigen Himbeer-Twist.' },
+                    f3: { name: 'Banane Toffee', desc: 'Süße Bananencreme gemischt mit klebrigem Toffee-Fudge.' },
+                    f4: { name: 'Doppel Dunkler Espresso', desc: 'Intensive dunkle Schokolade mit einem Kick Espresso.' },
+                }
             },
             productDetail: {
                 notFound: 'Produkt Nicht Gefunden',
