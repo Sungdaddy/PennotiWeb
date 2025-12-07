@@ -173,7 +173,7 @@ export const ProductDetail: React.FC = () => {
                     </div>
 
                     {/* Right Column - Info */}
-                    <div className="w-full md:w-1/2">
+                    <div className="w-full md:w-1/2 md:pl-32">
                         <motion.div
                             initial={{ x: 50, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}

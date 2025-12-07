@@ -13,11 +13,14 @@ import { AdminPanel } from './pages/AdminPanel';
 import { VoteFlavors } from './pages/VoteFlavors';
 import './i18n';
 
+import ScrollToAnchor from './components/ScrollToAnchor';
+
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <LoyaltyProvider>
         <Router>
+          <ScrollToAnchor />
           <div className="min-h-screen bg-vanilla text-chocolate selection:bg-brandRed selection:text-white overflow-hidden relative">
             <Navigation />
             <Routes>

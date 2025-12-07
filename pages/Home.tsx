@@ -53,7 +53,7 @@ export const Home: React.FC = () => {
                             transition={{ duration: 0.8 }}
                         >
                             <h1 className="text-6xl md:text-8xl font-playful font-bold leading-tight mb-2">
-                                Duo Penotti:
+                                Duo Penotti
                             </h1>
                             <h2 className="text-5xl md:text-7xl font-playful font-bold text-brandPink leading-tight mb-6 drop-shadow-md">
                                 Dubbel Lekker <br /> in één Potti!
@@ -83,11 +83,11 @@ export const Home: React.FC = () => {
                                 <img
                                     src="/duo-penotti-jar.png"
                                     alt="Duo Penotti Original Jar"
-                                    className="w-64 md:w-[450px] h-auto drop-shadow-2xl object-contain relative z-10 transform hover:scale-105 transition-transform duration-500"
+                                    className="w-64 md:w-[600px] h-auto drop-shadow-2xl object-contain relative z-10 transform hover:scale-105 transition-transform duration-500"
                                     onError={() => setImageError(true)}
                                 />
                             ) : (
-                                <JarVisual colorLeft="#2D1B15" colorRight="#FFFFFF" label="Original" className="w-64 md:w-[400px] h-auto" />
+                                <JarVisual colorLeft="#2D1B15" colorRight="#FFFFFF" label="Original" className="w-64 md:w-[500px] h-auto" />
                             )}
                         </motion.div>
                     </div>
