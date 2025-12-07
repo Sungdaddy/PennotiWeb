@@ -10,6 +10,8 @@ interface FlavorCandidate {
     image: string; // Using existing images for now, effectively "texture" placeholders
     color: string;
     badgeColor: string;
+    badgeText: string;
+    badgeTextColor?: string;
 }
 
 export const VoteFlavors: React.FC = () => {
@@ -21,7 +23,8 @@ export const VoteFlavors: React.FC = () => {
             percentage: 30, // Updated dummy percentages to roughly sum to 100
             image: '/salted-caramel-popcorn.png',
             color: 'bg-[#4DD0E1]', // Cyan/Teal
-            badgeColor: 'text-brandYellow'
+            badgeColor: 'text-brandYellow',
+            badgeText: 'Nieuw!'
         },
         {
             id: '2',
@@ -30,7 +33,8 @@ export const VoteFlavors: React.FC = () => {
             percentage: 20,
             image: '/white-choco-raspberry.png',
             color: 'bg-[#F06292]', // Pink
-            badgeColor: 'text-brandRed'
+            badgeColor: 'text-brandRed',
+            badgeText: 'Smaakfavoriet'
         },
         {
             id: '3',
@@ -39,7 +43,8 @@ export const VoteFlavors: React.FC = () => {
             percentage: 24,
             image: '/banana-toffee-choco.png',
             color: 'bg-[#FBC02D]', // Yellow
-            badgeColor: 'text-chocolate'
+            badgeColor: 'text-chocolate',
+            badgeText: 'Uitdager'
         },
         {
             id: '4',
@@ -48,7 +53,9 @@ export const VoteFlavors: React.FC = () => {
             percentage: 26,
             image: '/double-dark-espresso.png',
             color: 'bg-[#3E2723]', // Dark
-            badgeColor: 'text-white'
+            badgeColor: 'text-white',
+            badgeText: 'Returning Champion',
+            badgeTextColor: 'text-chocolate'
         },
     ]);
 
@@ -140,8 +147,8 @@ export const VoteFlavors: React.FC = () => {
                             className="bg-white rounded-[40px] border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col relative group hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all"
                         >
                             {/* Badge */}
-                            <div className={`absolute -top-4 -right-4 ${flavor.badgeColor.replace('text-', 'bg-')} text-white font-naughty text-sm px-4 py-2 rounded-full border-2 border-black shadow-sm z-10 transform rotate-12`}>
-                                Nieuw!
+                            <div className={`absolute -top-4 -right-4 ${flavor.badgeColor.replace('text-', 'bg-')} ${flavor.badgeTextColor || 'text-white'} font-naughty text-sm px-4 py-2 rounded-full border-2 border-black shadow-sm z-10 transform rotate-12`}>
+                                {flavor.badgeText}
                             </div>
 
                             {/* Image Window */}
