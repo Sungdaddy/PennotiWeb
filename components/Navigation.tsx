@@ -27,6 +27,7 @@ export const Navigation: React.FC = () => {
     { name: 'Producten', href: '/#products' },
     { name: 'Rewards', href: '/rewards' },
     { name: 'Stem', href: '/vote' },
+    { name: 'Recepten', href: '/recepten' },
   ];
 
   const handleLogout = () => {

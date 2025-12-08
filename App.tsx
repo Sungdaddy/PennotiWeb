@@ -11,6 +11,7 @@ import { Rewards } from './pages/Rewards';
 import { Cart } from './pages/Cart';
 import { AdminPanel } from './pages/AdminPanel';
 import { VoteFlavors } from './pages/VoteFlavors';
+import { Recipes } from './pages/Recipes';
 import './i18n';
 
 import ScrollToAnchor from './components/ScrollToAnchor';
@@ -31,6 +32,7 @@ const App: React.FC = () => {
               <Route path="/rewards" element={<Rewards />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/vote" element={<VoteFlavors />} />
+              <Route path="/recepten" element={<Recipes />} />
               <Route path="/admin" element={<AdminPanel />} />
             </Routes>
 
