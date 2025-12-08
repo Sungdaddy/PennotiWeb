@@ -107,17 +107,11 @@ export const Rewards: React.FC = () => {
 
                 {/* Header */}
                 <div className="text-center mb-12 flex flex-col items-center">
-                    <div className="bg-black/40 backdrop-blur-sm p-6 rounded-3xl border-2 border-white/20 shadow-xl inline-block max-w-4xl">
-                        <h1
-                            className="text-4xl md:text-5xl font-playful font-bold text-white mb-4"
-                            style={{ textShadow: '4px 4px 0px #000000' }}
-                        >
+                    <div className="bg-white/90 backdrop-blur-sm p-8 rounded-[2rem] border-4 border-chocolate shadow-xl w-fit mx-auto max-w-3xl">
+                        <h1 className="text-4xl md:text-5xl font-playful font-bold text-chocolate mb-4 leading-tight">
                             Duo Penotti Rewards Shop: <span className="text-brandPink">Spaar voor Plezier!</span>
                         </h1>
-                        <p
-                            className="text-xl text-white font-body mx-auto font-bold"
-                            style={{ textShadow: '2px 2px 0px #000000' }}
-                        >
+                        <p className="text-lg md:text-xl text-chocolate/80 font-body mx-auto font-bold max-w-2xl">
                             Wissel jouw punten in voor exclusieve cadeaus en ervaringen voor jong en oud.
                         </p>
                     </div>

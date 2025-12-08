@@ -102,36 +102,36 @@ export const VoteFlavors: React.FC = () => {
             <div className="relative z-10 container mx-auto px-4 py-6 pt-32 flex flex-col items-center">
 
                 {/* --- HEADER SECTION --- */}
-                <div className="text-center mb-16 max-w-4xl mx-auto">
-                    <span className="inline-block bg-brandYellow text-chocolate font-bold px-4 py-1 rounded-full border-2 border-black mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] uppercase tracking-wide text-sm">
+                <div className="flex flex-col items-center bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-[2rem] border-4 border-chocolate shadow-xl w-fit mx-auto max-w-2xl mb-16 text-center">
+                    <span className="inline-block bg-brandYellow text-chocolate font-bold px-4 py-1 rounded-full border-2 border-chocolate mb-4 shadow-[2px_2px_0px_0px_rgba(62,39,35,1)] uppercase tracking-wide text-sm">
                         Stem & Win
                     </span>
                     <motion.h1
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        className="text-5xl md:text-7xl font-playful font-extrabold text-brandPink drop-shadow-sm mb-4 leading-tight"
+                        className="text-5xl md:text-6xl font-playful font-extrabold text-chocolate drop-shadow-sm mb-4 leading-tight"
                     >
                         De <span className="text-brandPink">Smaak</span> Stemming
                     </motion.h1>
-                    <p className="text-brandPink text-xl font-bold max-w-2xl mx-auto mb-8">
+                    <p className="text-chocolate/80 text-lg md:text-xl font-bold max-w-lg mx-auto mb-8 font-body">
                         Welke nieuwe Duo Penotti smaak moeten wij gaan maken? Jouw stem telt!
                     </p>
 
                     {/* COUNTDOWN */}
-                    <div className="inline-flex flex-wrap justify-center gap-4 bg-white/50 backdrop-blur-md p-4 rounded-3xl border-2 border-black/10">
+                    <div className="inline-flex flex-wrap justify-center gap-4 bg-vanillaCream p-4 rounded-3xl border-2 border-chocolate/10 shadow-inner">
                         <div className="flex flex-col items-center px-4">
                             <span className="text-4xl font-black text-brandRed font-playful">{timeLeft.days}</span>
-                            <span className="text-xs font-bold uppercase tracking-wider">Dagen</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-chocolate/60">Dagen</span>
                         </div>
-                        <div className="w-px h-12 bg-black/10 self-center"></div>
+                        <div className="w-px h-12 bg-chocolate/10 self-center"></div>
                         <div className="flex flex-col items-center px-4">
                             <span className="text-4xl font-black text-brandRed font-playful">{timeLeft.hours}</span>
-                            <span className="text-xs font-bold uppercase tracking-wider">Uur</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-chocolate/60">Uur</span>
                         </div>
-                        <div className="w-px h-12 bg-black/10 self-center"></div>
+                        <div className="w-px h-12 bg-chocolate/10 self-center"></div>
                         <div className="flex flex-col items-center px-4">
                             <span className="text-4xl font-black text-brandRed font-playful">{timeLeft.minutes}</span>
-                            <span className="text-xs font-bold uppercase tracking-wider">Min</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-chocolate/60">Min</span>
                         </div>
                     </div>
                 </div>

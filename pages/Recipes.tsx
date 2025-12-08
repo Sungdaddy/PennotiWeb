@@ -14,9 +14,39 @@ export const Recipes: React.FC = () => {
     const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
     const model = import.meta.env.VITE_OPENROUTER_MODEL || 'openai/gpt-5-nano';
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!prompt.trim()) return;
+    const popularRecipes = [
+        {
+            name: 'Duo Pannenkoeken Toren',
+            image: '/pancakes-illustration.png',
+            prompt: 'Ik wil graag een recept voor een toren van pannenkoeken met Duo Penotti.'
+        },
+        {
+            name: 'Choco-Karamel IJsjes',
+            image: '/ice-cream-illustration.png',
+            prompt: 'Ik wil graag zelf ijsjes maken met chocolade en karamel á la Duo Penotti.'
+        },
+        {
+            name: 'Gouden Wentelteefjes',
+            image: '/french-toast-illustration.png',
+            prompt: 'Heb je een recept voor wentelteefjes met een Duo Penotti twist?'
+        }
+    ];
+
+    const handlePopularClick = (promptText: string) => {
+        setPrompt(promptText);
+        // We can't immediately submit because the state update is async, 
+        // but for now let's just pre-fill. 
+        // Or we could trigger a submit in a useEffect or separate handler.
+        // Let's just set it and let the user click send, OR call logic directly.
+        // Calling logic directly requires extracting handleSubmit logic.
+        // For simplicity and interaction, let's just prefill.
+        // Actually, user expects "Bekijk Recept" to specificially fetch it.
+        // Let's extract fetch logic.
+        fetchRecipe(promptText);
+    };
+
+    const fetchRecipe = async (inputPrompt: string) => {
+        if (!inputPrompt.trim()) return;
 
         if (!apiKey) {
             setError('Configuratie fout: API Key ontbreekt in .env settings.');
@@ -26,6 +56,8 @@ export const Recipes: React.FC = () => {
         setIsLoading(true);
         setResponse(null);
         setError(null);
+        // Update prompt state for visibility
+        setPrompt(inputPrompt);
 
         try {
             const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -54,7 +86,7 @@ export const Recipes: React.FC = () => {
                         },
                         {
                             role: 'user',
-                            content: prompt
+                            content: inputPrompt
                         }
                     ]
                 })
@@ -82,104 +114,159 @@ export const Recipes: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen pt-24 pb-12 relative overflow-hidden">
-            {/* Background elements derived from Home */}
-            <div className="fixed inset-0 pointer-events-none z-0 opacity-20">
+        <div className="min-h-screen pt-24 pb-12 relative overflow-hidden text-chocolate">
+
+            {/* STANDARD SITE BACKGROUND */}
+            <div className="fixed inset-0 flex z-0 pointer-events-none">
+                <div className="w-1/2 h-full bg-[#3E2723]"></div> {/* Dark Chocolate */}
+                <div className="w-1/2 h-full bg-[#FFF8E1]"></div> {/* Vanilla Cream */}
+            </div>
+
+            {/* FIXED SWIRL OVERLAY */}
+            <div className="fixed inset-0 pointer-events-none z-0">
                 <svg className="w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="none">
-                    <path d="M0 0 L 1440 0 L 1440 900 L 0 900 Z" fill="#FFF8E1" />
-                    <path d="M0 0 C 400 300, 900 100, 1440 400 L 1440 0 Z" fill="#3E2723" opacity="0.1" />
+                    <path
+                        d="M720 0 C 900 200, 500 400, 720 900 L 0 900 L 0 0 Z"
+                        fill="#3E2723"
+                    />
+                    <path
+                        d="M720 0 C 900 200, 500 400, 720 900 L 1440 900 L 1440 0 Z"
+                        fill="#FFF8E1"
+                    />
                 </svg>
             </div>
 
-            <div className="container mx-auto px-4 relative z-10 max-w-4xl">
+            {/* Top Dripping Chocolate Decoration - Kept as layer on top */}
+            <div className="absolute top-0 left-0 right-0 z-0 select-none pointer-events-none">
+                <svg className="w-full h-32 md:h-48" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                    <path fill="#3E2723" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+                    {/* Extra drips */}
+                    <path fill="#3E2723" d="M100,0 L100,150 C100,200 150,200 150,150 L150,0 Z" />
+                    <path fill="#3E2723" d="M300,0 L300,120 C300,160 340,160 340,120 L340,0 Z" />
+                    <path fill="#3E2723" d="M600,0 L600,180 C600,230 650,230 650,180 L650,0 Z" />
+                    <path fill="#3E2723" d="M900,0 L900,140 C900,180 940,180 940,140 L940,0 Z" />
+                    <path fill="#3E2723" d="M1200,0 L1200,160 C1200,210 1250,210 1250,160 L1250,0 Z" />
+                </svg>
+            </div>
 
-                <div className="text-center mb-12">
+            <div className="container mx-auto px-4 relative z-10 max-w-5xl">
+
+                {/* Header Section */}
+                <div className="text-center mb-10 pt-8 relative">
                     <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="inline-block p-4 bg-white rounded-full border-4 border-chocolate shadow-lg mb-4"
+                        initial={{ y: -50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        className="flex flex-col items-center bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-[2rem] border-4 border-chocolate shadow-xl w-fit mx-auto max-w-2xl"
                     >
-                        <ChefHat size={48} className="text-brandRed" />
+                        <div className="bg-white p-3 rounded-full border-4 border-chocolate shadow-lg mb-2 transform -rotate-6">
+                            <ChefHat size={40} className="text-brandRed" />
+                        </div>
+                        <h1 className="text-4xl md:text-6xl font-playful font-bold text-chocolate mb-2 drop-shadow-sm tracking-tight">
+                            De Duo Chef
+                        </h1>
+                        <p className="text-base md:text-lg font-body font-medium text-chocolate/80 max-w-md mx-auto leading-relaxed">
+                            Heb je zin in iets lekkers? Vertel onze AI Chef wat je in huis hebt of waar je zin in hebt,
+                            en krijg direct een uniek <span className="font-bold text-brandRed">Duo Penotti</span> recept!
+                        </p>
                     </motion.div>
-                    <h1 className="text-5xl md:text-7xl font-playful font-bold text-chocolate mb-4 drop-shadow-sm">
-                        De Duo Chef
-                    </h1>
-                    <p className="text-xl font-body text-chocolate/80 max-w-2xl mx-auto">
-                        Heb je zin in iets lekkers? Vertel onze AI Chef wat je in huis hebt of waar je zin in hebt,
-                        en krijg direct een uniek <span className="font-bold text-brandRed">Duo Penotti</span> recept!
-                    </p>
                 </div>
 
-                {/* Main Chat Area */}
-                <div className="grid gap-8">
-
-                    {/* Input Section */}
-                    <div className="bg-white p-2 rounded-[30px] border-4 border-chocolate shadow-[8px_8px_0px_0px_rgba(45,27,21,1)]">
-                        <form onSubmit={handleSubmit} className="flex gap-2 items-center p-2">
+                {/* Input Area - Redesigned */}
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="max-w-3xl mx-auto mb-16 relative z-20"
+                >
+                    <div className="bg-chocolate p-3 rounded-full shadow-[0px_10px_20px_rgba(62,39,35,0.4)] border-4 border-[#5D4037]">
+                        <form onSubmit={(e) => { e.preventDefault(); fetchRecipe(prompt); }} className="flex items-center gap-2">
                             <input
                                 type="text"
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
                                 placeholder="Bijv: 'Ik wil pannenkoeken maken' of 'Iets met banaan'..."
-                                className="flex-1 bg-transparent px-4 py-3 text-lg font-body font-bold text-chocolate placeholder:text-chocolate/40 focus:outline-none"
+                                className="flex-1 bg-white rounded-full px-8 py-4 text-chocolate font-body font-bold text-lg placeholder:text-chocolate/40 focus:outline-none shadow-inner"
                                 disabled={isLoading}
                             />
                             <button
                                 type="submit"
                                 disabled={!prompt.trim() || isLoading}
-                                className="bg-brandRed text-white p-4 rounded-full border-2 border-chocolate hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 shadow-[2px_2px_0px_0px_rgba(45,27,21,1)]"
+                                className="bg-brandYellow text-chocolate p-4 rounded-full hover:bg-brandYellow/90 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 shadow-md border-2 border-chocolate"
                             >
-                                {isLoading ? <Loader2 className="animate-spin" /> : <Send size={24} />}
+                                {isLoading ? <Loader2 className="animate-spin" size={28} strokeWidth={3} /> : <Send size={28} strokeWidth={2.5} className="ml-1" />}
                             </button>
                         </form>
                     </div>
+                </motion.div>
 
-                    {/* Response Section */}
-                    <AnimatePresence mode="wait">
-                        {error && (
+                {/* Response Section (If active) */}
+                <AnimatePresence>
+                    {response && (
+                        <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: 20, opacity: 0 }}
+                            className="bg-white rounded-[3rem] border-4 border-chocolate shadow-xl p-8 md:p-12 mb-16 relative"
+                        >
+                            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brandRed text-white font-naughty text-xl px-8 py-2 rounded-full border-4 border-white shadow-md">
+                                Recept van de Chef
+                            </div>
+                            <div className="prose prose-lg prose-headings:font-naughty prose-headings:text-chocolate prose-p:font-body prose-li:font-body max-w-none text-chocolate whitespace-pre-wrap">
+                                {response}
+                            </div>
+                            <div className="mt-8 flex justify-center">
+                                <button
+                                    onClick={() => setResponse(null)}
+                                    className="bg-brandTeal text-white font-bold px-8 py-3 rounded-full hover:bg-brandTeal/80 transition-colors shadow-md"
+                                >
+                                    Nog een recept?
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Popular Recipes Section */}
+                <motion.div
+                    initial={{ y: 50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-center"
+                >
+                    <h3 className="text-3xl font-naughty font-bold text-chocolate mb-8">Populaire Recepten</h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {popularRecipes.map((recipe, index) => (
                             <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0 }}
-                                className="p-6 bg-red-50 border-4 border-red-200 rounded-3xl text-center text-red-800"
+                                key={recipe.name}
+                                whileHover={{ y: -10 }}
+                                className="bg-white rounded-3xl overflow-hidden border-4 border-chocolate shadow-[8px_8px_0px_0px_rgba(62,39,35,0.8)] flex flex-col"
                             >
-                                <p className="font-bold">{error}</p>
-                            </motion.div>
-                        )}
-
-                        {response && (
-                            <motion.div
-                                key="response"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="bg-white rounded-[40px] border-4 border-brandTeal shadow-[12px_12px_0px_0px_rgba(45,27,21,0.15)] overflow-hidden"
-                            >
-                                <div className="bg-brandTeal p-4 border-b-4 border-chocolate flex justify-between items-center">
-                                    <h2 className="text-2xl font-naughty font-bold text-white pl-4">Recept van de Chef</h2>
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => setResponse(null)}
-                                            className="bg-white/20 hover:bg-white/40 text-white px-4 py-1 rounded-full text-sm font-bold transition-colors"
-                                        >
-                                            Nieuw Recept
-                                        </button>
-                                    </div>
+                                <div className="h-48 bg-vanillaCream overflow-hidden relative">
+                                    {/* Drip overlay on image top */}
+                                    <div className="absolute top-0 left-0 right-0 h-4 bg-chocolate" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 10%, 90% 30%, 80% 10%, 70% 40%, 60% 10%, 50% 50%, 40% 10%, 30% 30%, 20% 10%, 10% 40%, 0 10%)' }}></div>
+                                    <img src={recipe.image} alt={recipe.name} className="w-full h-full object-cover" />
                                 </div>
-                                <div className="p-8 md:p-12 prose prose-lg prose-headings:font-naughty prose-headings:text-chocolate prose-p:font-body prose-li:font-body max-w-none text-chocolate">
-                                    {/* Simple rendering of text with whitespace preservation */}
-                                    <div className="whitespace-pre-wrap leading-relaxed">
-                                        {response}
-                                    </div>
-                                </div>
-                                <div className="bg-vanillaCream p-4 text-center border-t-2 border-dashed border-chocolate/20">
-                                    <p className="text-sm font-bold text-chocolate/60">Eet smakelijk! 🍫</p>
+                                <div className="p-6 flex-1 flex flex-col items-center">
+                                    <h4 className="font-playful font-bold text-xl text-chocolate mb-4 leading-tight">{recipe.name}</h4>
+                                    <button
+                                        onClick={() => handlePopularClick(recipe.prompt)}
+                                        className="mt-auto bg-[#D4AF37] text-white font-bold text-sm px-6 py-2 rounded-full border-2 border-chocolate hover:bg-[#C5A028] shadow-[2px_2px_0px_0px_rgba(62,39,35,1)] uppercase tracking-wide"
+                                    >
+                                        Bekijk Recept
+                                    </button>
                                 </div>
                             </motion.div>
-                        )}
-                    </AnimatePresence>
+                        ))}
+                    </div>
+                </motion.div>
 
-                </div>
+                {error && (
+                    <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-red-100 border-2 border-red-400 text-red-800 px-6 py-4 rounded-xl shadow-lg z-50">
+                        {error}
+                    </div>
+                )}
+
             </div>
         </div>
     );
