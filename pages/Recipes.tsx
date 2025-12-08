@@ -12,7 +12,7 @@ export const Recipes: React.FC = () => {
 
     // Get API key and Model from environment variables
     const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-    const model = import.meta.env.VITE_OPENROUTER_MODEL || 'openai/gpt-5-nano';
+    const model = import.meta.env.VITE_OPENROUTER_MODEL || 'google/gemini-flash-1.5';
 
     const popularRecipes = [
         {

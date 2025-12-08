@@ -27,7 +27,7 @@ export const Rewards: React.FC = () => {
             id: '1',
             title: 'Duo Penotti Knuffelbeer',
             points: 1500,
-            image: '🧸',
+            image: '/rewards/bear.jpg',
             color: 'bg-brandTeal',
             category: 'Voor Kinderen'
         },
@@ -35,7 +35,7 @@ export const Rewards: React.FC = () => {
             id: '2',
             title: 'Exclusief Schort & Koksmuts Set',
             points: 2500,
-            image: '👨‍🍳',
+            image: '/rewards/apron-set.png',
             color: 'bg-brandPink',
             category: 'Keukenhulpjes'
         },
@@ -43,7 +43,7 @@ export const Rewards: React.FC = () => {
             id: '3',
             title: 'Gepersonaliseerde Mok',
             points: 1000,
-            image: '☕',
+            image: '/rewards/mug.png',
             color: 'bg-brandGreen',
             category: 'Keukenhulpjes'
         },
@@ -51,7 +51,7 @@ export const Rewards: React.FC = () => {
             id: '4',
             title: 'Dagje Pretpark Entree',
             points: 5000,
-            image: '🎢',
+            image: '🎢', // Keep emoji for now as no image was provided
             color: 'bg-brandTeal',
             category: 'Ervaringen'
         },
@@ -59,7 +59,7 @@ export const Rewards: React.FC = () => {
             id: '5',
             title: 'Luxe Ontbijtset',
             points: 3500,
-            image: '🥞',
+            image: '/rewards/breakfast-set.png',
             color: 'bg-brandPink',
             category: 'Voor Ouders'
         }
@@ -167,8 +167,16 @@ export const Rewards: React.FC = () => {
                             whileHover={{ scale: 1.02 }}
                             className={`${reward.color === 'bg-brandGreen' ? 'bg-[#AED581]' : reward.color} rounded-[2rem] border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col`}
                         >
-                            <div className="bg-white/50 h-48 flex items-center justify-center text-8xl relative overflow-hidden">
-                                <div className="z-10">{reward.image}</div>
+                            <div className="bg-white/50 h-64 flex items-center justify-center relative overflow-hidden p-4">
+                                {reward.image.startsWith('/') ? (
+                                    <img
+                                        src={reward.image}
+                                        alt={reward.title}
+                                        className="w-full h-full object-contain drop-shadow-lg transform transition-transform duration-300 hover:scale-110"
+                                    />
+                                ) : (
+                                    <div className="text-8xl z-10">{reward.image}</div>
+                                )}
                             </div>
 
                             <div className="p-6 text-center flex-1 flex flex-col">
